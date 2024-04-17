@@ -43,14 +43,14 @@ class Data {
     //1. -1未存储照片或视频提取人脸不符合比对质量要求
    //2. 0%- 100% 的数值，相似度百分比
   late String? _similarity;
-  late String _sn;
-  late String _signs;
+  late String? _sn;
+  late String? _signs;
 
   Data({
     required IdentityVerificationResult flag,
     required String? similarity,
-    required String sn,
-    required String signs
+    required String? sn,
+    required String? signs
   }) {
     _flag = flag;
     _similarity = similarity;
@@ -84,7 +84,7 @@ class Data {
 
   IdentityVerificationResult get flag => _flag;
   String? get similarity => _similarity;
-  String get sn => _sn;
+  String? get sn => _sn;
 
 }
 
