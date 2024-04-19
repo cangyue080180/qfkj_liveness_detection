@@ -1,14 +1,13 @@
 
-
-class ComparisonRequest{
+class ComparisonVideoRequest{
   final String id;
   final String name;
-  final String photo;
+  final String video;
 
-  ComparisonRequest({
+  ComparisonVideoRequest({
     required this.id,
     required this.name,
-    required this.photo
+    required this.video
 }){
     assert(
     id.isNotEmpty,
@@ -19,8 +18,8 @@ Cannot pass an empty id.
     assert(name.isNotEmpty,'''
 Cannot pass an empty name.
       ''');
-    assert(photo.isNotEmpty,'''
-Cannot pass an empty photo.
+    assert(video.isNotEmpty,'''
+Cannot pass an empty video.
       ''');
   }
 
@@ -28,7 +27,7 @@ Cannot pass an empty photo.
     return {
       'ID': id,
       'name': name,
-      'photo': photo,
+      'video': video,
     };
   }
 

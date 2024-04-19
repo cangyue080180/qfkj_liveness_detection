@@ -14,8 +14,6 @@ dependencies:
     sdk: flutter
   http: ^1.1.0
   m7_livelyness_detection: ^0.0.6+4
-  plugin_platform_interface: ^2.0.2
-  json_annotation: ^4.0.1
 
 dev_dependencies:
   flutter_test:

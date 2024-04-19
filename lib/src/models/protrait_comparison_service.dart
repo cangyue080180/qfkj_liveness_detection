@@ -6,6 +6,7 @@ import '../http/http_service.dart';
 import '../vo/ClientInfo.dart';
 import '../vo/ComparisonResponse.dart';
 import '../vo/authentication_request.dart';
+import '../vo/comparison_video_request.dart';
 import '../vo/response.dart';
 import '../vo/token.dart';
 
@@ -74,7 +75,7 @@ class PortraitComparisonService {
 
 
   Future<Response<Data?>> portraitComparisonForVideo(
-      ClientInfo clientInfo, ComparisonRequest data) async {
+      ClientInfo clientInfo, ComparisonVideoRequest data) async {
     try {
       final tokenResponse = await httpService.post(
         getTokenPath,

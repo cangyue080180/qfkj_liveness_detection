@@ -9,6 +9,7 @@ import 'package:qfkj_liveness_detection/src/vo/ClientInfo.dart';
 import 'package:qfkj_liveness_detection/src/vo/ComparisonResponse.dart';
 import 'package:qfkj_liveness_detection/src/vo/authentication_request.dart';
 import 'package:qfkj_liveness_detection/src/vo/caputred_image.dart';
+import 'package:qfkj_liveness_detection/src/vo/comparison_video_request.dart';
 import 'package:qfkj_liveness_detection/src/vo/detection_config.dart';
 import 'package:qfkj_liveness_detection/src/vo/detection_threshold.dart';
 import 'package:qfkj_liveness_detection/src/vo/response.dart';
@@ -78,7 +79,7 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
 
   @override
   Future<Response<Data?>> portraitComparisonForVideo(
-      ClientInfo clientInfo, ComparisonRequest data) {
+      ClientInfo clientInfo, ComparisonVideoRequest data) {
     return protraitComparisonService.portraitComparisonForVideo(
         clientInfo, data);
   }
@@ -90,7 +91,7 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
       String? photoData = await FileConvert.imageToBase64String(photoPath);
       if (photoData != null) {
         return protraitComparisonService.portraitComparisonForPhoto(
-            clientInfo, ComparisonRequest(id: id, name: name, data: photoData));
+            clientInfo, ComparisonRequest(id: id, name: name, photo: photoData));
       } else {
         return Response(status: Status.requestError, msg: "photoPath error");
       }
@@ -106,7 +107,7 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
       String? videoData = await FileConvert.videoFileToBase64(videoPath);
       if (videoData != null) {
         return protraitComparisonService.portraitComparisonForVideo(
-            clientInfo, ComparisonRequest(id: id, name: name, data: videoData));
+            clientInfo, ComparisonVideoRequest(id: id, name: name, video: videoData));
       } else {
         return Response(status: Status.requestError, msg: "videoPath error");
       }

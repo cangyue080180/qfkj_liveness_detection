@@ -13,3 +13,4 @@ export 'package:qfkj_liveness_detection/src/vo/response.dart';
 export 'package:qfkj_liveness_detection/src/vo/livelyness_step.dart';
 export 'package:qfkj_liveness_detection/src/vo/livelyness_step_item.dart';
 export 'package:qfkj_liveness_detection/qfkj_liveness_detection.dart';
+export 'package:qfkj_liveness_detection/src/vo/comparison_video_request.dart';

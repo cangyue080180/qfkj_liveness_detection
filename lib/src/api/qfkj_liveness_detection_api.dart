@@ -5,6 +5,7 @@ import '../vo/ClientInfo.dart';
 import '../vo/ComparisonResponse.dart';
 import '../vo/authentication_request.dart';
 import '../vo/caputred_image.dart';
+import '../vo/comparison_video_request.dart';
 import '../vo/detection_config.dart';
 import '../vo/detection_threshold.dart';
 import '../vo/response.dart';
@@ -36,7 +37,7 @@ class QfkjLivenessDetectionApi {
   }
 
   Future<Response<Data?>> portraitComparisonForVideo(
-      ClientInfo clientInfo, ComparisonRequest data) {
+      ClientInfo clientInfo, ComparisonVideoRequest data) {
     throw Exception("not implement error");
   }
 
