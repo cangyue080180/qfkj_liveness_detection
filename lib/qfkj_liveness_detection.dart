@@ -34,8 +34,8 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
       Color dotColor = const Color(0xffab48e0),
       double lineWidth = 1.6,
       double dotSize = 2.0,
-      bool displayLines = true,
-      bool displayDots = true,
+      bool displayLines = false,
+      bool displayDots = false,
       List<double>? dashValues}) {
     M7LivelynessDetection.instance.configure(
         thresholds: Mapper.mapToM7Threshold(thresholds),
@@ -55,6 +55,7 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
   @override
   Future<CapturedImage?> detectLivelyness(BuildContext context,
       {required DetectionConfig config}) async {
+    print("detection licong");
     final capturedImage = await M7LivelynessDetection.instance.detectLivelyness(
         context,
         config: M7DetectionConfig(

@@ -13,7 +13,8 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   http: ^1.1.0
-  m7_livelyness_detection: ^0.0.6+4
+  m7_livelyness_detection:
+    path: ./m7_livelyness_detection-0.0.6+4
 
 dev_dependencies:
   flutter_test:
