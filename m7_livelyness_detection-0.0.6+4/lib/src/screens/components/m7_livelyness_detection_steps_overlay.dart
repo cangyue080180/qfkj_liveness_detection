@@ -128,35 +128,35 @@ class M7LivelynessDetectionStepOverlayState
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          height: 10,
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                flex: _currentIndex + 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    color: Colors.green.shade800,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: widget.steps.length - (_currentIndex + 1),
-                child: Container(
-                  color: Colors.transparent,
-                ),
-              ),
-            ],
-          ),
-        ),
+        // SizedBox(
+        //   height: 10,
+        //   width: double.infinity,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.start,
+        //     crossAxisAlignment: CrossAxisAlignment.center,
+        //     mainAxisSize: MainAxisSize.min,
+        //     children: [
+        //       Expanded(
+        //         flex: _currentIndex + 1,
+        //         child: Container(
+        //           decoration: BoxDecoration(
+        //             borderRadius: const BorderRadius.only(
+        //               topRight: Radius.circular(20),
+        //               bottomRight: Radius.circular(20),
+        //             ),
+        //             color: Colors.green.shade800,
+        //           ),
+        //         ),
+        //       ),
+        //       Expanded(
+        //         flex: widget.steps.length - (_currentIndex + 1),
+        //         child: Container(
+        //           color: Colors.transparent,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         const Spacer(),
         Flexible(
           flex: 2,

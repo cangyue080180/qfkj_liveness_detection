@@ -55,7 +55,6 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
   @override
   Future<CapturedImage?> detectLivelyness(BuildContext context,
       {required DetectionConfig config}) async {
-    print("detection licong");
     final capturedImage = await M7LivelynessDetection.instance.detectLivelyness(
         context,
         config: M7DetectionConfig(
