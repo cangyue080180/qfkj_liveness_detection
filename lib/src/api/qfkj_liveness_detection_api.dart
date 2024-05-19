@@ -1,4 +1,6 @@
 
+import 'dart:ffi';
+
 import 'package:m7_livelyness_detection/index.dart';
 
 import '../vo/ClientInfo.dart';
@@ -32,7 +34,7 @@ class QfkjLivenessDetectionApi {
   }) {}
 
   Future<Response<Data?>> portraitComparisonForPhoto(
-      ClientInfo clientInfo, ComparisonRequest data) {
+      ClientInfo clientInfo, ComparisonRequest data, bool nonLive) {
     throw Exception("not implement error");
   }
 
@@ -42,7 +44,7 @@ class QfkjLivenessDetectionApi {
   }
 
   Future<Response<Data?>> portraitComparisonForPhotoPath(
-      ClientInfo clientInfo, String id, String name, String photoPath) {
+      ClientInfo clientInfo, String id, String name, String photoPath, bool nonLive) {
     throw Exception("not implement error");
   }
 

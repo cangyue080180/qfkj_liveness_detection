@@ -72,9 +72,9 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
 
   @override
   Future<Response<Data?>> portraitComparisonForPhoto(
-      ClientInfo clientInfo, ComparisonRequest data) {
+      ClientInfo clientInfo, ComparisonRequest data, bool nonLive) {
     return protraitComparisonService.portraitComparisonForPhoto(
-        clientInfo, data);
+        clientInfo, data,nonLive);
   }
 
   @override
@@ -86,12 +86,12 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
 
   @override
   Future<Response<Data?>> portraitComparisonForPhotoPath(
-      ClientInfo clientInfo, String id, String name, String photoPath) async {
+      ClientInfo clientInfo, String id, String name, String photoPath, bool nonLive) async {
     try {
       String? photoData = await FileConvert.imageToBase64String(photoPath);
       if (photoData != null) {
         return protraitComparisonService.portraitComparisonForPhoto(
-            clientInfo, ComparisonRequest(id: id, name: name, photo: photoData));
+            clientInfo, ComparisonRequest(id: id, name: name, photo: photoData), nonLive);
       } else {
         return Response(status: Status.requestError, msg: "photoPath error");
       }

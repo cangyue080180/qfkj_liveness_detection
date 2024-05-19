@@ -48,13 +48,19 @@ void main() {
 
     var test2 = await QfkjLivenessDetection.instance.portraitComparisonForPhoto(
         ClientInfo(clientId: "renxiangc2", clientSecret: "062e58fdb8296180"),
-        ComparisonRequest(id: "1", name: "test", photo: "wdfrhhh"));
-    print(test2.toString());
+        ComparisonRequest(id: "1", name: "test", photo: "wdfrhhh"), false);
+    print(test2.data);
 
+
+    var testNonLive = await QfkjLivenessDetection.instance.portraitComparisonForPhoto(
+        ClientInfo(clientId: "renxiangc2", clientSecret: "062e58fdb8296180"),
+        ComparisonRequest(id: "1", name: "test", photo: "wdfrhhh"), true);
+
+    print(testNonLive.data);
 
     var test3 = await QfkjLivenessDetection.instance.portraitComparisonForPhotoPath(
         ClientInfo(clientId: "renxiangc2", clientSecret: "062e58fdb8296180"),
-        "1", "ceshi","13455666");
+        "1", "ceshi","13455666", false);
     print(test3.toString());
 
     var test4 = await QfkjLivenessDetection.instance.portraitComparisonForVideo(

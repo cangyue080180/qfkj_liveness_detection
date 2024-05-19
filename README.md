@@ -161,6 +161,8 @@ dashValues: [5.0, 2.5],)
 
 `data: ComparisonRequest` ： 比对请求数据，包括待比对的照片等信息。
 
+`nonLive: bool` ： 是否包含活体检测， false 包含活体检测，true 不包含活体检测
+
 - 返回值：
 
 `Future<Response<Data?>>` ：异步结果，返回比对结果的响应对象
@@ -309,6 +311,8 @@ var response = await QfkjLivenessDetection.instance.portraitComparisonForVideo(
 `name: String` ： 公民姓名，不可为空。
 
 `photoPath: String` ： 照片路径，不可为空。
+
+`nonLive: bool` ： 是否包含活体检测， false 包含活体检测，true 不包含活体检测
 
 - 返回值：
 

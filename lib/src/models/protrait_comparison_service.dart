@@ -25,6 +25,9 @@ class PortraitComparisonService {
 // Path for image comparison
   static const String imageComparisonPath = "/gt/interface-service/third/security/compare/imageComparison";
 
+  static const String imageComparisonPathNonLive = "/gt/interface-service/third/security/compare/silentPicture";
+
+
 // Path for video comparison
   static const String videoComparisonPath = "/gt/interface-service/third/security/compare/videoComparison";
 
@@ -36,7 +39,7 @@ class PortraitComparisonService {
 
 
   Future<Response<Data?>> portraitComparisonForPhoto(
-      ClientInfo clientInfo, ComparisonRequest data) async {
+      ClientInfo clientInfo, ComparisonRequest data, bool nonLive) async {
     try {
       final tokenResponse = await httpService.post(
         getTokenPath,
@@ -49,8 +52,9 @@ class PortraitComparisonService {
             .accessToken;
 
         if (token != null) {
+          final path = nonLive ? imageComparisonPathNonLive : imageComparisonPath;
           final authResponse = await httpService.post(
-            imageComparisonPath,
+            path,
             headers: {
               'token': token
             },
