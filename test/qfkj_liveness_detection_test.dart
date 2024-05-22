@@ -58,9 +58,14 @@ void main() {
 
     print(testNonLive.data);
 
+    FileConvert.compressImage(File("/Users/cli3/人脸识别code/test/88e1fada-3d17-4476-9ed8-2480373e1aa5.jpg"));
+
+    var testSize = await FileConvert.imageToBase64String(File("/Users/cli3/人脸识别code/test/88e1fada-3d17-4476-9ed8-2480373e1aa5.jpg"));
+    print(testSize?.length ?? 0);
+
     var test3 = await QfkjLivenessDetection.instance.portraitComparisonForPhotoPath(
         ClientInfo(clientId: "renxiangc2", clientSecret: "062e58fdb8296180"),
-        "1", "ceshi","13455666", false);
+        "1", "ceshi","/Users/cli3/人脸识别code/test/88e1fada-3d17-4476-9ed8-2480373e1aa5.jpg", true);
     print(test3.toString());
 
     var test4 = await QfkjLivenessDetection.instance.portraitComparisonForVideo(

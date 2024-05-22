@@ -73,8 +73,12 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
   @override
   Future<Response<Data?>> portraitComparisonForPhoto(
       ClientInfo clientInfo, ComparisonRequest data, bool nonLive) {
-    return protraitComparisonService.portraitComparisonForPhoto(
-        clientInfo, data,nonLive);
+    if (data.photo.length > limitSize) {
+      return Future(() => Response(status: Status.requestError, msg: "photoPath error or more then the limit size"));
+    } else {
+      return protraitComparisonService.portraitComparisonForPhoto(
+          clientInfo, data,nonLive);
+    }
   }
 
   @override
@@ -88,12 +92,12 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
   Future<Response<Data?>> portraitComparisonForPhotoPath(
       ClientInfo clientInfo, String id, String name, String photoPath, bool nonLive) async {
     try {
-      String? photoData = await FileConvert.imageToBase64String(photoPath);
+      String? photoData = await FileConvert.compressAndConvertToBase64(photoPath);
       if (photoData != null) {
         return protraitComparisonService.portraitComparisonForPhoto(
             clientInfo, ComparisonRequest(id: id, name: name, photo: photoData), nonLive);
       } else {
-        return Response(status: Status.requestError, msg: "photoPath error");
+        return Response(status: Status.requestError, msg: "photoPath error or more then the limit size");
       }
     } catch (e) {
       return Response(status: Status.error, msg: e.toString());
