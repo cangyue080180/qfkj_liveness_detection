@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 
 import '../http/http_service.dart';
@@ -9,6 +10,7 @@ import '../vo/authentication_request.dart';
 import '../vo/comparison_video_request.dart';
 import '../vo/response.dart';
 import '../vo/token.dart';
+import 'package:http/http.dart' as http;
 
 
 
@@ -17,7 +19,7 @@ class PortraitComparisonService {
   // Using lowerCamelCase for constant names as per Dart guidelines
 
 // Base URL for the Portrait Comparison Service
-  static const String portraitComparisonServiceBaseUrl = "http://yzytest.iotseal.cn";
+  static const String portraitComparisonServiceBaseUrl = "https://yzy.iotseal.cn";
 
 // Path to get the token
   static const String getTokenPath = "/gt/interface-service/third/security/token";

@@ -1,12 +1,17 @@
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 
 class HttpService {
   final String baseUrl;
   late http.Client client;
   HttpService(this.baseUrl) {
-    client = http.Client();
+    final ioc = HttpClient();
+    ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    client = IOClient(ioc);
+    //client = http.Client();
   }
 
   Future<http.Response> get(String endpoint,{Map<String, dynamic>? params, Map<String, String>? headers}) async {

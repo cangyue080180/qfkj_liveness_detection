@@ -18,7 +18,7 @@ dependencies:
 #    path: ./m7_livelyness_detection-0.0.6+4
   m7_livelyness_detection:
     git:
-      url: https://github.com/cangyue080180/qfkj_liveness_detection.git
+      url: git@github.com:cangyue080180/qfkj_liveness_detection.git
       path: m7_livelyness_detection-0.0.6+4
       ref: main
 
