@@ -59,7 +59,7 @@ class M7LivelynessDetectionStepOverlayState
           Align(
             alignment: Alignment(0.0, 1/3),
             child: Text(
-              '请将脸部对正框内，确保光线充足',
+              '请将脸部对正框内,确保光线充足\n您正在使用联行支付,进行人脸验证',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16.0,

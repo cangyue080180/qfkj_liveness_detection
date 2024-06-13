@@ -2,12 +2,12 @@ import 'dart:convert';
 
 class ComparisonResponse {
   late int _code;
-  late String _msg;
+  late String? _msg;
   late Data? _data;
 
   ComparisonResponse({
     required int code,
-    required String msg,
+    String? msg,
     Data? data,
   }) {
     _code = code;
@@ -22,7 +22,7 @@ class ComparisonResponse {
   }
 
   int get code => _code;
-  String get msg => _msg;
+  String? get msg => _msg;
   Data? get data => _data;
 
   ComparisonResponse copyWith({
@@ -65,20 +65,24 @@ class Data {
     _signs = json['signs'];
   }
 
-   IdentityVerificationResult StringToEnum(String code) {
-    switch (code) {
-      case "0":
-        return IdentityVerificationResult.consistent;
-      case "1":
-        return IdentityVerificationResult.inconsistentInfo;
-      case "2":
-        return IdentityVerificationResult.noInformationFound;
-      case "3":
-        return IdentityVerificationResult.nonLiveVideo;
-      case "4":
-        return IdentityVerificationResult.noPortraitDetected;
-      default:
-        throw Exception("Invalid code for IdentityVerificationResult.");
+   IdentityVerificationResult StringToEnum(String? code) {
+    if (code == null) {
+      return IdentityVerificationResult.unKnown;
+    } else {
+      switch (code) {
+        case "0":
+          return IdentityVerificationResult.consistent;
+        case "1":
+          return IdentityVerificationResult.inconsistentInfo;
+        case "2":
+          return IdentityVerificationResult.noInformationFound;
+        case "3":
+          return IdentityVerificationResult.nonLiveVideo;
+        case "4":
+          return IdentityVerificationResult.noPortraitDetected;
+        default:
+          return IdentityVerificationResult.unKnown;
+      }
     }
   }
 
@@ -93,5 +97,6 @@ enum IdentityVerificationResult {
   inconsistentInfo, // 身份证号一致，姓名或视频不一致
   noInformationFound, // 未查到对应信息
   nonLiveVideo, // 提交视频非活体
-  noPortraitDetected // 未检测到人像
+  noPortraitDetected, // 未检测到人像
+  unKnown
 }

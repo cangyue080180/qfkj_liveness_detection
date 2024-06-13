@@ -65,7 +65,7 @@ class PortraitComparisonService {
 
           var comparisonResponse = ComparisonResponse.fromJson(
               jsonDecode(authResponse.body));
-          return Response(msg: comparisonResponse.msg,
+          return Response(msg: comparisonResponse.msg??"unKnown",
               status: comparisonResponse.code == 0 ? Status.success : Status.compareError,
               data: comparisonResponse.data);
         } else {
@@ -104,7 +104,7 @@ class PortraitComparisonService {
 
           var comparisonResponse = ComparisonResponse.fromJson(
               jsonDecode(authResponse.body));
-          return Response(msg: comparisonResponse.msg,
+          return Response(msg: comparisonResponse.msg??"unKnown",
               status: comparisonResponse.code == 0 ? Status.success : Status.compareError,
               data: comparisonResponse.data);
         } else {

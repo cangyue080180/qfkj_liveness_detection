@@ -46,10 +46,10 @@ void main() {
     /*var test = await QfkjLivenessDetection.instance.protraitComparisonForPhoto(ClientInfo(clientId: "renxiangc2", clientSecret: "062e58fdb8296180"), ComparisonRequest(id:"1", name:"test", data:"wdfrhhh"));
      print(test.toString());*/
 
-    var test2 = await QfkjLivenessDetection.instance.portraitComparisonForPhoto(
+   /* var test2 = await QfkjLivenessDetection.instance.portraitComparisonForPhoto(
         ClientInfo(clientId: "renxiangc2", clientSecret: "062e58fdb8296180"),
         ComparisonRequest(id: "1", name: "test", photo: "wdfrhhh"), false);
-    print(test2.data);
+    print(test2.data);*/
 
 
     var testNonLive = await QfkjLivenessDetection.instance.portraitComparisonForPhoto(
@@ -61,12 +61,12 @@ void main() {
   /*  FileConvert.compressImage(File("/Users/cli3/人脸识别code/test/88e1fada-3d17-4476-9ed8-2480373e1aa5.jpg"));
 
     var testSize = await FileConvert.imageToBase64String(File("/Users/cli3/人脸识别code/test/88e1fada-3d17-4476-9ed8-2480373e1aa5.jpg"));
-    print(testSize?.length ?? 0);
+    print(testSize?.length ?? 0);*/
 
     var test3 = await QfkjLivenessDetection.instance.portraitComparisonForPhotoPath(
-        ClientInfo(clientId: "renxiangc2", clientSecret: "062e58fdb8296180"),
-        "1", "ceshi","/Users/cli3/人脸识别code/test/88e1fada-3d17-4476-9ed8-2480373e1aa5.jpg", true);
-    print(test3.toString());*/
+        ClientInfo(clientId: "yzxbn240607", clientSecret: "e3620948979f5f74"),
+        "1", "ceshi","/Users/cli3/人脸识别code/test/8aab13e9-b715-4d31-a0d2-bd0c1ba99a7f.jpg", true);
+    print(test3.toString());
 
     var test4 = await QfkjLivenessDetection.instance.portraitComparisonForVideo(
         ClientInfo(clientId: "renxiangc2", clientSecret: "062e58fdb8296180"),
