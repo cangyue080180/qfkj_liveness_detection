@@ -62,7 +62,8 @@ class QfkjLivenessDetection implements QfkjLivenessDetectionApi {
             startWithInfoScreen: config.startWithInfoScreen,
             maxSecToDetect: config.maxSecToDetect,
             allowAfterMaxSec: config.allowAfterMaxSec,
-            captureButtonColor: config.captureButtonColor));
+            captureButtonColor: config.captureButtonColor,
+            hintMessage: config.hintMessage));
     return Future(() => capturedImage != null
         ? CapturedImage(
             imgPath: capturedImage.imgPath,

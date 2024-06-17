@@ -497,6 +497,7 @@ class _MLivelyness7DetectionScreenState
               didCaptureAutomatically: true,
             ),
           ),
+          hintMessage: widget.config.hintMessage,
         ),
         Visibility(
           visible: _isCaptureButtonVisible,

@@ -3,10 +3,12 @@ import 'package:m7_livelyness_detection/index.dart';
 class M7LivelynessDetectionStepOverlay extends StatefulWidget {
   final List<M7LivelynessStepItem> steps;
   final VoidCallback onCompleted;
+  final String? hintMessage;
   const M7LivelynessDetectionStepOverlay({
     Key? key,
     required this.steps,
     required this.onCompleted,
+    required this.hintMessage
   }) : super(key: key);
 
   @override
@@ -59,7 +61,8 @@ class M7LivelynessDetectionStepOverlayState
           Align(
             alignment: Alignment(0.0, 1/3),
             child: Text(
-              '请将脸部对正框内,确保光线充足\n您正在使用联行支付,进行人脸验证',
+              widget.hintMessage??'请将脸部对正框内,确保光线充足\n您正在使用联行支付,进行人脸验证',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16.0,

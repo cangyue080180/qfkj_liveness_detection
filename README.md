@@ -62,6 +62,9 @@ import 'package:qfkj_liveness_detection/index.dart';
 
     /// [maxSecToDetect]完成后按钮的图标颜色。
     final Color? captureButtonColor;
+    
+    /// 人脸识别框下面的提示语, 根据自己的需求进行/n 换行
+    final String? hintMessage;
    } 
    
    class LivelynessStepItem {
@@ -70,6 +73,7 @@ import 'package:qfkj_liveness_detection/index.dart';
     final double? thresholdToCheck;
     final bool isCompleted;
     final Color? detectionColor;
+    final String? hintMessage;
   }
   
   enum LivelynessStep {
@@ -103,6 +107,8 @@ import 'package:qfkj_liveness_detection/index.dart';
           ),
         ],
         startWithInfoScreen: true,
+        maxSecToDetect: 40,
+        hintMessage: "请将脸部对正框内,确保光线充足\n您正在使用联行支付,进行人脸验证"
       ),
     );
 ```

@@ -18,12 +18,15 @@ class M7DetectionConfig {
   /// Icon color of the button that will come after the [maxSecToDetect] is completed.
   final Color? captureButtonColor;
 
+  final String? hintMessage;
+
   M7DetectionConfig({
     required this.steps,
     this.startWithInfoScreen = false,
     this.maxSecToDetect = 15,
     this.allowAfterMaxSec = false,
     this.captureButtonColor,
+    this.hintMessage
   }) {
     assert(
       steps.isNotEmpty,

@@ -416,6 +416,7 @@ class _M7LivelynessDetectionScreenAndroidState
             onCompleted: () => _takePicture(
               didCaptureAutomatically: true,
             ),
+            hintMessage: widget.config.hintMessage,
           ),
         Visibility(
           visible: _isCaptureButtonVisible,
