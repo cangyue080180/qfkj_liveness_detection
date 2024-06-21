@@ -53,7 +53,7 @@ class M7LivelynessDetectionStepOverlayState
         children: [
           _buildBody(),
           Align(
-            alignment: Alignment(0.0, 1/2),
+            alignment: Alignment(0.0, 1/3),
             child: Text(
               widget.hintMessage??'请将脸部对正框内,确保光线充足\n您正在使用联行支付,进行人脸验证',
               textAlign: TextAlign.center,
