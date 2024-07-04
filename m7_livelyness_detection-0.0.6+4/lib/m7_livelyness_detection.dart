@@ -85,11 +85,11 @@ class M7LivelynessDetection {
       MaterialPageRoute(
         builder: (context) => Platform.isIOS
             ? M7LivelynessDetectionScreenV1(
-                config: config,
-              )
+          config: config,
+        )
             : M7LivelynessDetectionPageV2(
-                config: config,
-              ),
+          config: config,
+        ),
       ),
     );
     return capturedFacePath;

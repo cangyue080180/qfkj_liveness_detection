@@ -29,7 +29,7 @@ class _MLivelyness7DetectionScreenState
   int _cameraIndex = 0;
   bool _isBusy = false;
   final GlobalKey<M7LivelynessDetectionStepOverlayState> _stepsKey =
-      GlobalKey<M7LivelynessDetectionStepOverlayState>();
+  GlobalKey<M7LivelynessDetectionStepOverlayState>();
   bool _isProcessingStep = false;
   bool _didCloseEyes = false;
   bool _isTakingPicture = false;
@@ -45,7 +45,7 @@ class _MLivelyness7DetectionScreenState
     _preInitCallBack();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _postFrameCallBack(),
+          (_) => _postFrameCallBack(),
     );
   }
 
@@ -76,19 +76,19 @@ class _MLivelyness7DetectionScreenState
   void _postFrameCallBack() async {
     availableCams = await availableCameras();
     if (availableCams.any(
-      (element) =>
-          element.lensDirection == CameraLensDirection.front &&
+          (element) =>
+      element.lensDirection == CameraLensDirection.front &&
           element.sensorOrientation == 90,
     )) {
       _cameraIndex = availableCams.indexOf(
         availableCams.firstWhere((element) =>
-            element.lensDirection == CameraLensDirection.front &&
+        element.lensDirection == CameraLensDirection.front &&
             element.sensorOrientation == 90),
       );
     } else {
       _cameraIndex = availableCams.indexOf(
         availableCams.firstWhere(
-          (element) => element.lensDirection == CameraLensDirection.front,
+              (element) => element.lensDirection == CameraLensDirection.front,
         ),
       );
     }
@@ -100,7 +100,7 @@ class _MLivelyness7DetectionScreenState
   void _startTimer() {
     _timerToDetectFace = Timer(
       Duration(seconds: widget.config.maxSecToDetect),
-      () {
+          () {
         _timerToDetectFace?.cancel();
         _timerToDetectFace = null;
         if (widget.config.allowAfterMaxSec) {
@@ -138,11 +138,13 @@ class _MLivelyness7DetectionScreenState
       ResolutionPreset.high,
       enableAudio: false,
     );
+
     _cameraController?.initialize().then((_) {
       if (!mounted) {
         return;
       }
       _startTimer();
+      _cameraController?.setZoomLevel(1.0);
       _cameraController?.startImageStream(_processCameraImage);
       setState(() {});
     });
@@ -172,7 +174,7 @@ class _MLivelyness7DetectionScreenState
     if (inputImageFormat == null) return;
 
     final planeData = cameraImage.planes.map(
-      (Plane plane) {
+          (Plane plane) {
         return InputImagePlaneMetadata(
           bytesPerRow: plane.bytesPerRow,
           height: plane.height,
@@ -214,7 +216,7 @@ class _MLivelyness7DetectionScreenState
           inputImage.inputImageData!.size,
           inputImage.inputImageData!.imageRotation,
         );
-        _customPaint = CustomPaint(
+        /*_customPaint = CustomPaint(
           painter: painter,
           child: Container(
             color: Colors.transparent,
@@ -225,7 +227,7 @@ class _MLivelyness7DetectionScreenState
               bottom: MediaQuery.of(context).padding.bottom,
             ),
           ),
-        );
+        );*/
         if (_isProcessingStep &&
             _steps[_stepsKey.currentState?.currentIndex ?? 0].step ==
                 M7LivelynessStep.blink) {
@@ -256,7 +258,7 @@ class _MLivelyness7DetectionScreenState
     required M7LivelynessStep step,
   }) async {
     final int indexToUpdate = _steps.indexWhere(
-      (p0) => p0.step == step,
+          (p0) => p0.step == step,
     );
 
     _steps[indexToUpdate] = _steps[indexToUpdate].copyWith(
@@ -279,7 +281,7 @@ class _MLivelyness7DetectionScreenState
         return;
       }
       setState(
-        () => _isTakingPicture = true,
+            () => _isTakingPicture = true,
       );
       await _cameraController?.stopImageStream();
       final XFile? clickedImage = await _cameraController?.takePicture();
@@ -316,7 +318,7 @@ class _MLivelyness7DetectionScreenState
   void _resetSteps() async {
     for (var p0 in _steps) {
       final int index = _steps.indexWhere(
-        (p1) => p1.step == p0.step,
+            (p1) => p1.step == p0.step,
       );
       _steps[index] = _steps[index].copyWith(
         isCompleted: false,
@@ -337,7 +339,7 @@ class _MLivelyness7DetectionScreenState
       return;
     }
     setState(
-      () => _isProcessingStep = true,
+          () => _isProcessingStep = true,
     );
   }
 
@@ -346,7 +348,7 @@ class _MLivelyness7DetectionScreenState
       return;
     }
     setState(
-      () => _isProcessingStep = false,
+          () => _isProcessingStep = false,
     );
   }
 
@@ -360,25 +362,25 @@ class _MLivelyness7DetectionScreenState
     switch (step) {
       case M7LivelynessStep.blink:
         final M7BlinkDetectionThreshold? blinkThreshold =
-            M7LivelynessDetection.instance.thresholdConfig.firstWhereOrNull(
-          (p0) => p0 is M7BlinkDetectionThreshold,
+        M7LivelynessDetection.instance.thresholdConfig.firstWhereOrNull(
+              (p0) => p0 is M7BlinkDetectionThreshold,
         ) as M7BlinkDetectionThreshold?;
         if ((face.leftEyeOpenProbability ?? 1.0) <
-                (blinkThreshold?.leftEyeProbability ?? 0.25) &&
+            (blinkThreshold?.leftEyeProbability ?? 0.25) &&
             (face.rightEyeOpenProbability ?? 1.0) <
                 (blinkThreshold?.rightEyeProbability ?? 0.25)) {
           _startProcessing();
           if (mounted) {
             setState(
-              () => _didCloseEyes = true,
+                  () => _didCloseEyes = true,
             );
           }
         }
         break;
       case M7LivelynessStep.turnLeft:
         final M7HeadTurnDetectionThreshold? headTurnThreshold =
-            M7LivelynessDetection.instance.thresholdConfig.firstWhereOrNull(
-          (p0) => p0 is M7HeadTurnDetectionThreshold,
+        M7LivelynessDetection.instance.thresholdConfig.firstWhereOrNull(
+              (p0) => p0 is M7HeadTurnDetectionThreshold,
         ) as M7HeadTurnDetectionThreshold?;
         if ((face.headEulerAngleY ?? 0) >
             (headTurnThreshold?.rotationAngle ?? 45)) {
@@ -388,8 +390,8 @@ class _MLivelyness7DetectionScreenState
         break;
       case M7LivelynessStep.turnRight:
         final M7HeadTurnDetectionThreshold? headTurnThreshold =
-            M7LivelynessDetection.instance.thresholdConfig.firstWhereOrNull(
-          (p0) => p0 is M7HeadTurnDetectionThreshold,
+        M7LivelynessDetection.instance.thresholdConfig.firstWhereOrNull(
+              (p0) => p0 is M7HeadTurnDetectionThreshold,
         ) as M7HeadTurnDetectionThreshold?;
         if ((face.headEulerAngleY ?? 0) >
             (headTurnThreshold?.rotationAngle ?? -50)) {
@@ -399,8 +401,8 @@ class _MLivelyness7DetectionScreenState
         break;
       case M7LivelynessStep.smile:
         final M7SmileDetectionThreshold? smileThreshold =
-            M7LivelynessDetection.instance.thresholdConfig.firstWhereOrNull(
-          (p0) => p0 is M7SmileDetectionThreshold,
+        M7LivelynessDetection.instance.thresholdConfig.firstWhereOrNull(
+              (p0) => p0 is M7SmileDetectionThreshold,
         ) as M7SmileDetectionThreshold?;
         if ((face.smilingProbability ?? 0) >
             (smileThreshold?.probability ?? 0.75)) {
@@ -419,15 +421,15 @@ class _MLivelyness7DetectionScreenState
         _isInfoStepCompleted
             ? _buildDetectionBody()
             : M7LivelynessInfoWidget(
-                onStartTap: () {
-                  if (mounted) {
-                    setState(
-                      () => _isInfoStepCompleted = true,
-                    );
-                  }
-                  _startLiveFeed();
-                },
-              ),
+          onStartTap: () {
+            if (mounted) {
+              setState(
+                    () => _isInfoStepCompleted = true,
+              );
+            }
+            _startLiveFeed();
+          },
+        ),
         Align(
           alignment: Alignment.topRight,
           child: Padding(
@@ -466,34 +468,28 @@ class _MLivelyness7DetectionScreenState
     final size = MediaQuery.of(context).size;
     var scale = size.aspectRatio * _cameraController!.value.aspectRatio;
     if (scale < 1) scale = 1 / scale;
+    // _cameraController?.setZoomLevel(1.0);
+    // _cameraController?.value = _cameraController!.value.copyWith(previewSize: Size(320, 200));
     final Widget cameraView = CameraPreview(_cameraController!);
     return Stack(
       fit: StackFit.expand,
       children: [
-        Center(
+        Align(alignment: Alignment(0.0, -1/3), child: ClipOval(child:
+        Container(width: 260, height: 260, child: AspectRatio(
+          aspectRatio: 1.0,
           child: cameraView,
-        ),
-        BackdropFilter(
-          filter: ui.ImageFilter.blur(
-            sigmaX: 5.0,
-            sigmaY: 5.0,
-          ),
-          child: Container(
-            color: Colors.transparent,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-        ),
-        Center(
-          child: cameraView,
-        ),
+        )),)),
         if (_customPaint != null) _customPaint!,
+        Align(
+          alignment: Alignment(0.0, -1/3),
+          child: CircularProgress(),
+        ),
         M7LivelynessDetectionStepOverlay(
           key: _stepsKey,
           steps: _steps,
           onCompleted: () => Future.delayed(
             const Duration(milliseconds: 500),
-            () => _takePicture(
+                () => _takePicture(
               didCaptureAutomatically: true,
             ),
           ),
