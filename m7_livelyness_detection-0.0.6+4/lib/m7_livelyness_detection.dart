@@ -84,10 +84,10 @@ class M7LivelynessDetection {
     final M7CapturedImage? capturedFacePath = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Platform.isIOS
-            ? M7LivelynessDetectionScreenV1(
+            ? M7LivelynessDetectionPageV2(
           config: config,
         )
-            : M7LivelynessDetectionPageV2(
+            : M7LivelynessDetectionPageV3(
           config: config,
         ),
       ),

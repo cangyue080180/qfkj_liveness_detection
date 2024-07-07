@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:m7_livelyness_detection/index.dart';
 import 'package:flutter/cupertino.dart';
 
-class M7LivelynessDetectionPageV2 extends StatelessWidget {
+class M7LivelynessDetectionPageV3 extends StatelessWidget {
   final M7DetectionConfig config;
 
-  const M7LivelynessDetectionPageV2({
+  const M7LivelynessDetectionPageV3({
     required this.config,
     super.key,
   });
@@ -15,7 +15,7 @@ class M7LivelynessDetectionPageV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: M7LivelynessDetectionScreenV2(
+        child: M7LivelynessDetectionScreenV3(
           config: config,
         ),
       ),
@@ -23,21 +23,21 @@ class M7LivelynessDetectionPageV2 extends StatelessWidget {
   }
 }
 
-class M7LivelynessDetectionScreenV2 extends StatefulWidget {
+class M7LivelynessDetectionScreenV3 extends StatefulWidget {
   final M7DetectionConfig config;
 
-  const M7LivelynessDetectionScreenV2({
+  const M7LivelynessDetectionScreenV3({
     required this.config,
     super.key,
   });
 
   @override
-  State<M7LivelynessDetectionScreenV2> createState() =>
+  State<M7LivelynessDetectionScreenV3> createState() =>
       _M7LivelynessDetectionScreenAndroidState();
 }
 
 class _M7LivelynessDetectionScreenAndroidState
-    extends State<M7LivelynessDetectionScreenV2>/* with SingleTickerProviderStateMixin*/{
+    extends State<M7LivelynessDetectionScreenV3>/* with SingleTickerProviderStateMixin*/{
   //* MARK: - Private Variables
   //? =========================================================
   final _faceDetectionController = BehaviorSubject<FaceDetectionModel>();
@@ -56,7 +56,7 @@ class _M7LivelynessDetectionScreenAndroidState
 
   late final List<M7LivelynessStepItem> _steps;
   final GlobalKey<M7LivelynessDetectionStepOverlayState> _stepsKey =
-      GlobalKey<M7LivelynessDetectionStepOverlayState>();
+  GlobalKey<M7LivelynessDetectionStepOverlayState>();
 
   CameraState? _cameraState;
   bool _isProcessing = false;
@@ -72,7 +72,7 @@ class _M7LivelynessDetectionScreenAndroidState
     _preInitCallBack();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _postFrameCallBack(),
+          (_) => _postFrameCallBack(),
     );
   }
 
@@ -109,14 +109,14 @@ class _M7LivelynessDetectionScreenAndroidState
     }
     if (mounted) {
       setState(
-        () => _isProcessing = true,
+            () => _isProcessing = true,
       );
     }
     final inputImage = img.toInputImage();
 
     try {
       final List<Face> detectedFaces =
-          await faceDetector.processImage(inputImage);
+      await faceDetector.processImage(inputImage);
       _faceDetectionController.add(
         FaceDetectionModel(
           faces: detectedFaces,
@@ -129,13 +129,13 @@ class _M7LivelynessDetectionScreenAndroidState
       await _processImage(inputImage, detectedFaces);
       if (mounted) {
         setState(
-          () => _isProcessing = false,
+              () => _isProcessing = false,
         );
       }
     } catch (error) {
       if (mounted) {
         setState(
-          () => _isProcessing = false,
+              () => _isProcessing = false,
         );
       }
       debugPrint("...sending image resulted error $error");
@@ -174,7 +174,7 @@ class _M7LivelynessDetectionScreenAndroidState
     required M7LivelynessStep step,
   }) async {
     final int indexToUpdate = _steps.indexWhere(
-      (p0) => p0.step == step,
+          (p0) => p0.step == step,
     );
 
     _steps[indexToUpdate] = _steps[indexToUpdate].copyWith(
@@ -199,21 +199,24 @@ class _M7LivelynessDetectionScreenAndroidState
           _startProcessing();
           if (mounted) {
             setState(
-              () => _didCloseEyes = true,
+                  () => _didCloseEyes = true,
             );
           }
         }
         break;
       case M7LivelynessStep.turnLeft:
-        const double headTurnThreshold = -45.0;
-        if ((face.headEulerAngleY ?? 0) < (headTurnThreshold)) {
+        print("Test trunRight: ${face.headEulerAngleY}");
+        const double headTurnThreshold = 45.0;
+        if ((face.headEulerAngleY ?? 0) > (headTurnThreshold)) {
           _startProcessing();
           await _completeStep(step: step);
         }
         break;
       case M7LivelynessStep.turnRight:
-        const double headTurnThreshold = 45.0;
-        if ((face.headEulerAngleY ?? 0) > (headTurnThreshold)) {
+        print("Test trunRight: ${face.headEulerAngleY}");
+        const double headTurnThreshold = -45.0;
+        if ((face.headEulerAngleY ?? 0) > (headTurnThreshold) &&
+            (face.headEulerAngleY ?? 0) < -20.0) {
           _startProcessing();
           await _completeStep(step: step);
         }
@@ -233,7 +236,7 @@ class _M7LivelynessDetectionScreenAndroidState
       return;
     }
     setState(
-      () => _isProcessingStep = true,
+          () => _isProcessingStep = true,
     );
   }
 
@@ -242,14 +245,14 @@ class _M7LivelynessDetectionScreenAndroidState
       return;
     }
     setState(
-      () => _isProcessingStep = false,
+          () => _isProcessingStep = false,
     );
   }
 
   void _startTimer() {
     _timerToDetectFace = Timer(
       Duration(seconds: widget.config.maxSecToDetect),
-      () {
+          () {
         _timerToDetectFace?.cancel();
         _timerToDetectFace = null;
         if (widget.config.allowAfterMaxSec) {
@@ -276,8 +279,8 @@ class _M7LivelynessDetectionScreenAndroidState
     _cameraState?.when(
       onPhotoMode: (p0) => Future.delayed(
         const Duration(milliseconds: 500),
-        () => p0.takePhoto().then(
-          (value) {
+            () => p0.takePhoto().then(
+              (value) {
             _onDetectionCompleted(
               imgToReturn: value,
               didCaptureAutomatically: didCaptureAutomatically,
@@ -296,7 +299,7 @@ class _M7LivelynessDetectionScreenAndroidState
       return;
     }
     setState(
-      () => _isCompleted = true,
+          () => _isCompleted = true,
     );
     final String imgPath = imgToReturn ?? "";
     if (imgPath.isEmpty || didCaptureAutomatically == null) {
@@ -314,7 +317,7 @@ class _M7LivelynessDetectionScreenAndroidState
   void _resetSteps() async {
     for (var p0 in _steps) {
       final int index = _steps.indexWhere(
-        (p1) => p1.step == p0.step,
+            (p1) => p1.step == p0.step,
       );
       _steps[index] = _steps[index].copyWith(
         isCompleted: false,
@@ -354,9 +357,9 @@ class _M7LivelynessDetectionScreenAndroidState
                   aspectRatio: CameraAspectRatios.ratio_4_3,
                   sensor: Sensors.front,
                   progressIndicator: Center(
-                       child: Platform.isIOS
-                           ? CupertinoActivityIndicator(color: Colors.green.shade800,)
-                           : CircularProgressIndicator(color: Colors.green.shade800,),
+                    child: Platform.isIOS
+                        ? CupertinoActivityIndicator(color: Colors.green.shade800,)
+                        : CircularProgressIndicator(color: Colors.green.shade800,),
                   ),
                   onImageForAnalysis: (img) => _processCameraImage(img),
                   imageAnalysisConfig: AnalysisConfig(
@@ -407,7 +410,7 @@ class _M7LivelynessDetectionScreenAndroidState
           Align(
             alignment: Alignment(0.0, -1/3),
             child: CircularProgress(),
-              ),
+          ),
 
         if (_isInfoStepCompleted)
           M7LivelynessDetectionStepOverlay(
@@ -477,126 +480,3 @@ class _M7LivelynessDetectionScreenAndroidState
   }
 }
 
-class CircularProgress extends StatefulWidget {
-  @override
-  _CircularProgressState createState() => _CircularProgressState();
-}
-
-class _CircularProgressState extends State<CircularProgress> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 3),
-    );
-
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller)
-      ..addListener(() {
-        setState(() {}); // 触发重绘
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _controller.repeat(); // 完成后重新开始
-        }
-      });
-
-    _controller.forward(); // 开始动画
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    print("liming build CircularProgressPainter");
-    return CustomPaint(
-      painter: CircularProgressPainter(_animation.value),
-      child: Container(
-        width: 260,
-        height: 260,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-}
-
-class CircularProgressPainter extends CustomPainter {
-  final double progress;
-  // 背景灰色弧
-  final backgroundPaint = Paint()
-    ..color = Colors.grey.withOpacity(0.3)
-    ..strokeWidth = 7.0
-    ..style = PaintingStyle.stroke;
-
-  // 前景绿色弧
-  final foregroundPaint = Paint()
-    ..color = Colors.green.shade800.withOpacity(0.8)
-    ..strokeWidth = 7.0
-    ..style = PaintingStyle.stroke;
-
-  CircularProgressPainter(this.progress);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final startAngle = -pi / 2; // 顶部中心开始
-    final sweepAngle = 2 * pi / 5; // 弧度长度（1/5的圆）
-    final progressAngle = 2 * pi * progress; // 动态的进度长度
-    final offset = Offset(size.width / 2, size.height / 2);
-    final radius = min(size.width / 2, size.height / 2) + 5; // 减去线宽，防止边缘被裁剪
-
-    // 画背景灰色弧
-    canvas.drawArc(
-      Rect.fromCircle(center: offset, radius: radius),
-      startAngle,
-      2 * pi, // 完整的圆
-      false,
-      backgroundPaint,
-    );
-
-    // 动态计算进度弧开始的角度
-    final foregroundAngleOffset = 2 * pi * progress; // 全圆旋转
-    final foregroundStartAngle = -pi / 2 + foregroundAngleOffset; // 从顶部中心开始，加上偏移
-    // 画前景绿色进度弧
-    canvas.drawArc(
-      Rect.fromCircle(center: offset, radius: radius),
-      foregroundStartAngle,
-      sweepAngle,
-      false,
-      foregroundPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-
-// class CircleBorderPainter extends CustomPainter {
-//   final Animation<double> animation;
-//
-//   CircleBorderPainter(this.animation) : super(repaint: animation);
-//
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     var paint = Paint()
-//       ..color = Colors.white.withOpacity(1 - animation.value) // 动态改变透明度
-//       ..style = PaintingStyle.stroke
-//       ..strokeWidth = 5.0;
-//
-//     // 绘制圆圈边界动画效果
-//     canvas.drawCircle(size.center(Offset.zero), size.width * 0.3 + 5.0, paint);
-//   }
-//
-//   @override
-//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-//     return true;
-//   }
-// }

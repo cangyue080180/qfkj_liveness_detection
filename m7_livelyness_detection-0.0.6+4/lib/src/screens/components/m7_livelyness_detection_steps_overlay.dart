@@ -85,11 +85,11 @@ class M7LivelynessDetectionStepOverlayState
       _showLoader();
       await Future.delayed(
         const Duration(
-          milliseconds: 500,
+          milliseconds: 150,
         ),
       );
       await _pageController.nextPage(
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 150),
         curve: Curves.easeIn,
       );
       await Future.delayed(
