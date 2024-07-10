@@ -205,7 +205,7 @@ class _M7LivelynessDetectionScreenAndroidState
         }
         break;
       case M7LivelynessStep.turnLeft:
-        print("Test trunRight: ${face.headEulerAngleY}");
+        print("Test turnRight: ${face.headEulerAngleY ?? 0}");
         const double headTurnThreshold = 45.0;
         if ((face.headEulerAngleY ?? 0) > (headTurnThreshold)) {
           _startProcessing();
@@ -213,7 +213,7 @@ class _M7LivelynessDetectionScreenAndroidState
         }
         break;
       case M7LivelynessStep.turnRight:
-        print("Test trunRight: ${face.headEulerAngleY}");
+        print("Test turnRight: ${face.headEulerAngleY ?? 0}");
         const double headTurnThreshold = -45.0;
         if ((face.headEulerAngleY ?? 0) > (headTurnThreshold) &&
             (face.headEulerAngleY ?? 0) < -20.0) {
