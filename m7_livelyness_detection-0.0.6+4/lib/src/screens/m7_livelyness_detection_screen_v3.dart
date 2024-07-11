@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:m7_livelyness_detection/index.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -206,7 +209,7 @@ class _M7LivelynessDetectionScreenAndroidState
         break;
       case M7LivelynessStep.turnLeft:
         print("Test turnRight: ${face.headEulerAngleY ?? 0}");
-        const double headTurnThreshold = 45.0;
+        const double headTurnThreshold = 35.0;
         if ((face.headEulerAngleY ?? 0) > (headTurnThreshold)) {
           _startProcessing();
           await _completeStep(step: step);
@@ -276,6 +279,7 @@ class _M7LivelynessDetectionScreenAndroidState
       _onDetectionCompleted();
       return;
     }
+    print("takePicture");
     _cameraState?.when(
       onPhotoMode: (p0) => Future.delayed(
         const Duration(milliseconds: 500),

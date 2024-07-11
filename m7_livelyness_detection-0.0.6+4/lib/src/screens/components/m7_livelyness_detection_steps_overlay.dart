@@ -4,7 +4,8 @@ class M7LivelynessDetectionStepOverlay extends StatefulWidget {
   final List<M7LivelynessStepItem> steps;
   final VoidCallback onCompleted;
   final String? hintMessage;
-  const M7LivelynessDetectionStepOverlay({
+  bool alreadyOnComplete = false;
+  M7LivelynessDetectionStepOverlay({
     Key? key,
     required this.steps,
     required this.onCompleted,
@@ -93,12 +94,15 @@ class M7LivelynessDetectionStepOverlayState
         curve: Curves.easeIn,
       );
       await Future.delayed(
-        const Duration(seconds: 2),
+        const Duration(seconds: 1),
       );
       _hideLoader();
       setState(() => _currentIndex++);
     } else {
-      widget.onCompleted();
+      if (widget.alreadyOnComplete == false) {
+        widget.alreadyOnComplete = true;
+        widget.onCompleted();
+      }
     }
   }
 
