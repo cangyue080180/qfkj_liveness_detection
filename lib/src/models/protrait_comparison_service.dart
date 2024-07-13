@@ -25,9 +25,9 @@ class PortraitComparisonService {
   static const String getTokenPath = "/gt/interface-service/third/security/token";
 
 // Path for image comparison
-  static const String imageComparisonPath = "/gt/interface-service/third/security/portrait/verasktoqclive";
+  static const String imageComparisonPath = "/gt/interface-service/third/security/compare/imageComparison";
 
-  static const String imageComparisonPathNonLive = "/gt/interface-service/third/security/portrait/verasktoqc";
+  static const String imageComparisonPathNonLive = "/gt/interface-service/third/security/compare/silentPicture";
 
 
 // Path for video comparison

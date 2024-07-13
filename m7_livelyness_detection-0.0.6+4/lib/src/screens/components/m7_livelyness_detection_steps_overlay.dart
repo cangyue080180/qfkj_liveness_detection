@@ -5,12 +5,12 @@ class M7LivelynessDetectionStepOverlay extends StatefulWidget {
   final VoidCallback onCompleted;
   final String? hintMessage;
   bool alreadyOnComplete = false;
-  M7LivelynessDetectionStepOverlay({
-    Key? key,
-    required this.steps,
-    required this.onCompleted,
-    required this.hintMessage
-  }) : super(key: key);
+  M7LivelynessDetectionStepOverlay(
+      {Key? key,
+      required this.steps,
+      required this.onCompleted,
+      required this.hintMessage})
+      : super(key: key);
 
   @override
   State<M7LivelynessDetectionStepOverlay> createState() =>
@@ -18,7 +18,8 @@ class M7LivelynessDetectionStepOverlay extends StatefulWidget {
 }
 
 class M7LivelynessDetectionStepOverlayState
-    extends State<M7LivelynessDetectionStepOverlay> with SingleTickerProviderStateMixin{
+    extends State<M7LivelynessDetectionStepOverlay>
+    with SingleTickerProviderStateMixin {
   //* MARK: - Public Variables
   //? =========================================================
   int get currentIndex {
@@ -54,9 +55,9 @@ class M7LivelynessDetectionStepOverlayState
         children: [
           _buildBody(),
           Align(
-            alignment: Alignment(0.0, 1/3),
+            alignment: Alignment(0.0, 1 / 3),
             child: Text(
-              widget.hintMessage??'请将脸部对正框内,确保光线充足\n您正在使用联行支付,进行人脸验证',
+              widget.hintMessage ?? '请将脸部对正框内,确保光线充足\n您正在使用联行支付,进行人脸验证',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,
@@ -78,23 +79,27 @@ class M7LivelynessDetectionStepOverlayState
   //* MARK: - Public Methods for Business Logic
   //? =========================================================
   Future<void> nextPage() async {
+    print("${DateTime.now()}, nextPage _isLoading $_isLoading");
     if (_isLoading) {
       return;
     }
+    print(
+        "${DateTime.now()}, nextPage alreadyOnComplete ${widget.alreadyOnComplete}, _currentIndex ${_currentIndex}, ${widget.steps.length}");
     if ((_currentIndex + 1) <= (widget.steps.length - 1)) {
       //Move to next step
       _showLoader();
       await Future.delayed(
         const Duration(
-          milliseconds: 150,
+          milliseconds: 500,
         ),
       );
       await _pageController.nextPage(
-        duration: const Duration(milliseconds: 150),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeIn,
       );
       await Future.delayed(
-        const Duration(seconds: 1),
+        // const Duration(seconds: 1),
+        const Duration(milliseconds: 500),
       );
       _hideLoader();
       setState(() => _currentIndex++);
@@ -233,7 +238,6 @@ class M7LivelynessDetectionStepOverlayState
           );
   }
 }
-
 
 //* MARK: - add
 //? =========================================================

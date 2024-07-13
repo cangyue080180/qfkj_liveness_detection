@@ -36,8 +36,8 @@ class M7LivelynessDetectionScreenV2 extends StatefulWidget {
       _M7LivelynessDetectionScreenAndroidState();
 }
 
-class _M7LivelynessDetectionScreenAndroidState
-    extends State<M7LivelynessDetectionScreenV2>/* with SingleTickerProviderStateMixin*/{
+class _M7LivelynessDetectionScreenAndroidState extends State<
+    M7LivelynessDetectionScreenV2> /* with SingleTickerProviderStateMixin*/ {
   //* MARK: - Private Variables
   //? =========================================================
   final _faceDetectionController = BehaviorSubject<FaceDetectionModel>();
@@ -64,6 +64,7 @@ class _M7LivelynessDetectionScreenAndroidState
   Timer? _timerToDetectFace;
   bool _isCaptureButtonVisible = false;
   bool _isCompleted = false;
+  bool alreadyOnComplete = false;
 
   //* MARK: - Life Cycle Methods
   //? =========================================================
@@ -78,12 +79,14 @@ class _M7LivelynessDetectionScreenAndroidState
 
   @override
   void deactivate() {
+//    print("${DateTime.now()}, deactivate faceDetector.close");
     faceDetector.close();
     super.deactivate();
   }
 
   @override
   void dispose() {
+//    print("${DateTime.now()}, dispose");
     _faceDetectionController.close();
     _timerToDetectFace?.cancel();
     _timerToDetectFace = null;
@@ -104,6 +107,8 @@ class _M7LivelynessDetectionScreenAndroidState
   }
 
   Future<void> _processCameraImage(AnalysisImage img) async {
+    // print(
+    //     "${DateTime.now()}, _processCameraImage _isProcessing $_isProcessing");
     if (_isProcessing) {
       return;
     }
@@ -115,8 +120,14 @@ class _M7LivelynessDetectionScreenAndroidState
     final inputImage = img.toInputImage();
 
     try {
+      // print(
+      //     "${DateTime.now()}, _processCameraImage faceDetector.processImage BEGIN");
       final List<Face> detectedFaces =
           await faceDetector.processImage(inputImage);
+
+      // print(
+      //     "${DateTime.now()}, _processCameraImage faceDetector.processImage END");
+
       _faceDetectionController.add(
         FaceDetectionModel(
           faces: detectedFaces,
@@ -127,6 +138,7 @@ class _M7LivelynessDetectionScreenAndroidState
         ),
       );
       await _processImage(inputImage, detectedFaces);
+      // print("${DateTime.now()}, _processImage _detect END");
       if (mounted) {
         setState(
           () => _isProcessing = false,
@@ -161,6 +173,7 @@ class _M7LivelynessDetectionScreenAndroidState
           }
         }
       }
+      // print("${DateTime.now()}, _processImage _detect BEGIN");
       _detect(
         face: firstFace,
         step: _steps[_stepsKey.currentState?.currentIndex ?? 0].step,
@@ -205,16 +218,16 @@ class _M7LivelynessDetectionScreenAndroidState
         }
         break;
       case M7LivelynessStep.turnLeft:
-        print("TurnRight: ${face.headEulerAngleY ?? 0}");
-        const double headTurnThreshold = -45.0;
+        const double headTurnThreshold = -25.0;
+//        print("${DateTime.now()} turnLeft ${face.headEulerAngleY}");
         if ((face.headEulerAngleY ?? 0) < (headTurnThreshold)) {
           _startProcessing();
           await _completeStep(step: step);
         }
         break;
       case M7LivelynessStep.turnRight:
-        print("TurnRight: ${face.headEulerAngleY ?? 0}");
-        const double headTurnThreshold = 20.0;
+        const double headTurnThreshold = 25.0;
+        //       print("${DateTime.now()} turnRight ${face.headEulerAngleY}");
         if ((face.headEulerAngleY ?? 0) > (headTurnThreshold)) {
           _startProcessing();
           await _completeStep(step: step);
@@ -222,6 +235,7 @@ class _M7LivelynessDetectionScreenAndroidState
         break;
       case M7LivelynessStep.smile:
         const double smileThreshold = 0.75;
+//        print("${DateTime.now()} smile ${face.smilingProbability}");
         if ((face.smilingProbability ?? 0) > (smileThreshold)) {
           _startProcessing();
           await _completeStep(step: step);
@@ -301,6 +315,8 @@ class _M7LivelynessDetectionScreenAndroidState
       () => _isCompleted = true,
     );
     final String imgPath = imgToReturn ?? "";
+
+//    print("${DateTime.now()}, _onDetectionCompleted");
     if (imgPath.isEmpty || didCaptureAutomatically == null) {
       Navigator.of(context).pop(null);
       return;
@@ -335,89 +351,101 @@ class _M7LivelynessDetectionScreenAndroidState
   //? =========================================================
   @override
   Widget build(BuildContext context) {
-    print("liming build out");
     return Stack(
       fit: StackFit.expand,
       alignment: Alignment.center,
       children: [
         _isInfoStepCompleted
             ? Align(
-          alignment: Alignment(0.0, -1/3),
-          child: ClipOval(
-            child: Container(
-              width: 260,
-              height: 260,
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: CameraAwesomeBuilder.custom(
-                  flashMode: FlashMode.auto,
-                  zoom: 0.1,
-                  previewFit: CameraPreviewFit.fitWidth,
-                  aspectRatio: CameraAspectRatios.ratio_4_3,
-                  sensor: Sensors.front,
-                  progressIndicator: Center(
-                       child: Platform.isIOS
-                           ? CupertinoActivityIndicator(color: Colors.green.shade800,)
-                           : CircularProgressIndicator(color: Colors.green.shade800,),
-                  ),
-                  onImageForAnalysis: (img) => _processCameraImage(img),
-                  imageAnalysisConfig: AnalysisConfig(
-                    autoStart: true,
-                    androidOptions: const AndroidAnalysisOptions.nv21(
-                      width: 250,
+                alignment: Alignment(0.0, -1 / 3),
+                child: ClipOval(
+                  child: Container(
+                    width: 260,
+                    height: 260,
+                    child: AspectRatio(
+                      aspectRatio: 1.0,
+                      child: CameraAwesomeBuilder.custom(
+                        // enableAudio: false,
+                        flashMode: FlashMode.auto,
+                        zoom: 0.1,
+                        previewFit: CameraPreviewFit.fitWidth,
+                        aspectRatio: CameraAspectRatios.ratio_4_3,
+                        sensor: Sensors.front,
+                        progressIndicator: Center(
+                          child: Platform.isIOS
+                              ? CupertinoActivityIndicator(
+                                  color: Colors.green.shade800,
+                                )
+                              : CircularProgressIndicator(
+                                  color: Colors.green.shade800,
+                                ),
+                        ),
+                        onImageForAnalysis: (img) => _processCameraImage(img),
+                        imageAnalysisConfig: AnalysisConfig(
+                          autoStart: true,
+                          androidOptions: const AndroidAnalysisOptions.nv21(
+                            width: 250,
+                          ),
+                          maxFramesPerSecond: 30,
+                        ),
+                        builder: (state, previewSize, previewRect) {
+                          _cameraState = state;
+                          return M7PreviewDecoratorWidget(
+                            cameraState: state,
+                            faceDetectionStream: _faceDetectionController,
+                            previewSize: previewSize,
+                            previewRect: previewRect,
+                            detectionColor: _steps[
+                                    _stepsKey.currentState?.currentIndex ?? 0]
+                                .detectionColor,
+                          );
+                        },
+                        saveConfig: SaveConfig.photo(
+                          pathBuilder: () async {
+                            final String fileName = "${M7Utils.generate()}.jpg";
+                            final String path =
+                                await getTemporaryDirectory().then(
+                              (value) => value.path,
+                            );
+                            return "$path/$fileName";
+                          },
+                        ),
+                      ),
                     ),
-                    maxFramesPerSecond: 30,
-                  ),
-                  builder: (state, previewSize, previewRect) {
-                    _cameraState = state;
-                    return M7PreviewDecoratorWidget(
-                      cameraState: state,
-                      faceDetectionStream: _faceDetectionController,
-                      previewSize: previewSize,
-                      previewRect: previewRect,
-                      detectionColor:
-                      _steps[_stepsKey.currentState?.currentIndex ?? 0]
-                          .detectionColor,
-                    );
-                  },
-                  saveConfig: SaveConfig.photo(
-                    pathBuilder: () async {
-                      final String fileName = "${M7Utils.generate()}.jpg";
-                      final String path = await getTemporaryDirectory().then(
-                            (value) => value.path,
-                      );
-                      return "$path/$fileName";
-                    },
                   ),
                 ),
-              ),
-            ),
-          ),
-        )
+              )
             : M7LivelynessInfoWidget(
-          onStartTap: () {
-            if (!mounted) {
-              return;
-            }
-            _startTimer();
-            setState(
-                  () => _isInfoStepCompleted = true,
-            );
-          },
-        ),
+                onStartTap: () {
+                  if (!mounted) {
+                    return;
+                  }
+                  _startTimer();
+                  setState(
+                    () => _isInfoStepCompleted = true,
+                  );
+                },
+              ),
         if (_cameraState != null)
           Align(
-            alignment: Alignment(0.0, -1/3),
+            alignment: Alignment(0.0, -1 / 3),
             child: CircularProgress(),
-              ),
-
+          ),
         if (_isInfoStepCompleted)
           M7LivelynessDetectionStepOverlay(
             key: _stepsKey,
             steps: _steps,
-            onCompleted: () => _takePicture(
-              didCaptureAutomatically: true,
-            ),
+            onCompleted: () {
+              // print(
+              //     "${DateTime.now()}, before _takePicture faceDetector.close, alreadyOnComplete $alreadyOnComplete");
+              faceDetector.close();
+              if (alreadyOnComplete == false) {
+                alreadyOnComplete = true;
+                _takePicture(
+                  didCaptureAutomatically: true,
+                );
+              }
+            },
             hintMessage: widget.config.hintMessage,
           ),
         Visibility(
@@ -484,7 +512,8 @@ class CircularProgress extends StatefulWidget {
   _CircularProgressState createState() => _CircularProgressState();
 }
 
-class _CircularProgressState extends State<CircularProgress> with SingleTickerProviderStateMixin {
+class _CircularProgressState extends State<CircularProgress>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -511,7 +540,6 @@ class _CircularProgressState extends State<CircularProgress> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    print("liming build CircularProgressPainter");
     return CustomPaint(
       painter: CircularProgressPainter(_animation.value),
       child: Container(
@@ -563,7 +591,8 @@ class CircularProgressPainter extends CustomPainter {
 
     // 动态计算进度弧开始的角度
     final foregroundAngleOffset = 2 * pi * progress; // 全圆旋转
-    final foregroundStartAngle = -pi / 2 + foregroundAngleOffset; // 从顶部中心开始，加上偏移
+    final foregroundStartAngle =
+        -pi / 2 + foregroundAngleOffset; // 从顶部中心开始，加上偏移
     // 画前景绿色进度弧
     canvas.drawArc(
       Rect.fromCircle(center: offset, radius: radius),
@@ -579,7 +608,6 @@ class CircularProgressPainter extends CustomPainter {
     return true;
   }
 }
-
 
 // class CircleBorderPainter extends CustomPainter {
 //   final Animation<double> animation;

@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:m7_livelyness_detection/index.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -39,8 +36,8 @@ class M7LivelynessDetectionScreenV3 extends StatefulWidget {
       _M7LivelynessDetectionScreenAndroidState();
 }
 
-class _M7LivelynessDetectionScreenAndroidState
-    extends State<M7LivelynessDetectionScreenV3>/* with SingleTickerProviderStateMixin*/{
+class _M7LivelynessDetectionScreenAndroidState extends State<
+    M7LivelynessDetectionScreenV3> /* with SingleTickerProviderStateMixin*/ {
   //* MARK: - Private Variables
   //? =========================================================
   final _faceDetectionController = BehaviorSubject<FaceDetectionModel>();
@@ -59,7 +56,7 @@ class _M7LivelynessDetectionScreenAndroidState
 
   late final List<M7LivelynessStepItem> _steps;
   final GlobalKey<M7LivelynessDetectionStepOverlayState> _stepsKey =
-  GlobalKey<M7LivelynessDetectionStepOverlayState>();
+      GlobalKey<M7LivelynessDetectionStepOverlayState>();
 
   CameraState? _cameraState;
   bool _isProcessing = false;
@@ -75,7 +72,7 @@ class _M7LivelynessDetectionScreenAndroidState
     _preInitCallBack();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-          (_) => _postFrameCallBack(),
+      (_) => _postFrameCallBack(),
     );
   }
 
@@ -112,14 +109,14 @@ class _M7LivelynessDetectionScreenAndroidState
     }
     if (mounted) {
       setState(
-            () => _isProcessing = true,
+        () => _isProcessing = true,
       );
     }
     final inputImage = img.toInputImage();
 
     try {
       final List<Face> detectedFaces =
-      await faceDetector.processImage(inputImage);
+          await faceDetector.processImage(inputImage);
       _faceDetectionController.add(
         FaceDetectionModel(
           faces: detectedFaces,
@@ -132,13 +129,13 @@ class _M7LivelynessDetectionScreenAndroidState
       await _processImage(inputImage, detectedFaces);
       if (mounted) {
         setState(
-              () => _isProcessing = false,
+          () => _isProcessing = false,
         );
       }
     } catch (error) {
       if (mounted) {
         setState(
-              () => _isProcessing = false,
+          () => _isProcessing = false,
         );
       }
       debugPrint("...sending image resulted error $error");
@@ -177,7 +174,7 @@ class _M7LivelynessDetectionScreenAndroidState
     required M7LivelynessStep step,
   }) async {
     final int indexToUpdate = _steps.indexWhere(
-          (p0) => p0.step == step,
+      (p0) => p0.step == step,
     );
 
     _steps[indexToUpdate] = _steps[indexToUpdate].copyWith(
@@ -202,13 +199,13 @@ class _M7LivelynessDetectionScreenAndroidState
           _startProcessing();
           if (mounted) {
             setState(
-                  () => _didCloseEyes = true,
+              () => _didCloseEyes = true,
             );
           }
         }
         break;
       case M7LivelynessStep.turnLeft:
-        print("Test turnRight: ${face.headEulerAngleY ?? 0}");
+//        print("turnLeft: ${face.headEulerAngleY ?? 0}");
         const double headTurnThreshold = 35.0;
         if ((face.headEulerAngleY ?? 0) > (headTurnThreshold)) {
           _startProcessing();
@@ -216,7 +213,7 @@ class _M7LivelynessDetectionScreenAndroidState
         }
         break;
       case M7LivelynessStep.turnRight:
-        print("Test turnRight: ${face.headEulerAngleY ?? 0}");
+//        print("turnRight: ${face.headEulerAngleY ?? 0}");
         const double headTurnThreshold = -45.0;
         if ((face.headEulerAngleY ?? 0) > (headTurnThreshold) &&
             (face.headEulerAngleY ?? 0) < -20.0) {
@@ -239,7 +236,7 @@ class _M7LivelynessDetectionScreenAndroidState
       return;
     }
     setState(
-          () => _isProcessingStep = true,
+      () => _isProcessingStep = true,
     );
   }
 
@@ -248,14 +245,14 @@ class _M7LivelynessDetectionScreenAndroidState
       return;
     }
     setState(
-          () => _isProcessingStep = false,
+      () => _isProcessingStep = false,
     );
   }
 
   void _startTimer() {
     _timerToDetectFace = Timer(
       Duration(seconds: widget.config.maxSecToDetect),
-          () {
+      () {
         _timerToDetectFace?.cancel();
         _timerToDetectFace = null;
         if (widget.config.allowAfterMaxSec) {
@@ -279,12 +276,11 @@ class _M7LivelynessDetectionScreenAndroidState
       _onDetectionCompleted();
       return;
     }
-    print("takePicture");
     _cameraState?.when(
       onPhotoMode: (p0) => Future.delayed(
         const Duration(milliseconds: 500),
-            () => p0.takePhoto().then(
-              (value) {
+        () => p0.takePhoto().then(
+          (value) {
             _onDetectionCompleted(
               imgToReturn: value,
               didCaptureAutomatically: didCaptureAutomatically,
@@ -303,7 +299,7 @@ class _M7LivelynessDetectionScreenAndroidState
       return;
     }
     setState(
-          () => _isCompleted = true,
+      () => _isCompleted = true,
     );
     final String imgPath = imgToReturn ?? "";
     if (imgPath.isEmpty || didCaptureAutomatically == null) {
@@ -321,7 +317,7 @@ class _M7LivelynessDetectionScreenAndroidState
   void _resetSteps() async {
     for (var p0 in _steps) {
       final int index = _steps.indexWhere(
-            (p1) => p1.step == p0.step,
+        (p1) => p1.step == p0.step,
       );
       _steps[index] = _steps[index].copyWith(
         isCompleted: false,
@@ -340,82 +336,85 @@ class _M7LivelynessDetectionScreenAndroidState
   //? =========================================================
   @override
   Widget build(BuildContext context) {
-    print("liming build out");
     return Stack(
       fit: StackFit.expand,
       alignment: Alignment.center,
       children: [
         _isInfoStepCompleted
             ? Align(
-          alignment: Alignment(0.0, -1/3),
-          child: ClipOval(
-            child: Container(
-              width: 260,
-              height: 260,
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: CameraAwesomeBuilder.custom(
-                  flashMode: FlashMode.auto,
-                  zoom: 0.1,
-                  previewFit: CameraPreviewFit.fitWidth,
-                  aspectRatio: CameraAspectRatios.ratio_4_3,
-                  sensor: Sensors.front,
-                  progressIndicator: Center(
-                    child: Platform.isIOS
-                        ? CupertinoActivityIndicator(color: Colors.green.shade800,)
-                        : CircularProgressIndicator(color: Colors.green.shade800,),
-                  ),
-                  onImageForAnalysis: (img) => _processCameraImage(img),
-                  imageAnalysisConfig: AnalysisConfig(
-                    autoStart: true,
-                    androidOptions: const AndroidAnalysisOptions.nv21(
-                      width: 250,
+                alignment: Alignment(0.0, -1 / 3),
+                child: ClipOval(
+                  child: Container(
+                    width: 260,
+                    height: 260,
+                    child: AspectRatio(
+                      aspectRatio: 1.0,
+                      child: CameraAwesomeBuilder.custom(
+                        flashMode: FlashMode.auto,
+                        zoom: 0.1,
+                        previewFit: CameraPreviewFit.fitWidth,
+                        aspectRatio: CameraAspectRatios.ratio_4_3,
+                        sensor: Sensors.front,
+                        progressIndicator: Center(
+                          child: Platform.isIOS
+                              ? CupertinoActivityIndicator(
+                                  color: Colors.green.shade800,
+                                )
+                              : CircularProgressIndicator(
+                                  color: Colors.green.shade800,
+                                ),
+                        ),
+                        onImageForAnalysis: (img) => _processCameraImage(img),
+                        imageAnalysisConfig: AnalysisConfig(
+                          autoStart: true,
+                          androidOptions: const AndroidAnalysisOptions.nv21(
+                            width: 250,
+                          ),
+                          maxFramesPerSecond: 30,
+                        ),
+                        builder: (state, previewSize, previewRect) {
+                          _cameraState = state;
+                          return M7PreviewDecoratorWidget(
+                            cameraState: state,
+                            faceDetectionStream: _faceDetectionController,
+                            previewSize: previewSize,
+                            previewRect: previewRect,
+                            detectionColor: _steps[
+                                    _stepsKey.currentState?.currentIndex ?? 0]
+                                .detectionColor,
+                          );
+                        },
+                        saveConfig: SaveConfig.photo(
+                          pathBuilder: () async {
+                            final String fileName = "${M7Utils.generate()}.jpg";
+                            final String path =
+                                await getTemporaryDirectory().then(
+                              (value) => value.path,
+                            );
+                            return "$path/$fileName";
+                          },
+                        ),
+                      ),
                     ),
-                    maxFramesPerSecond: 30,
-                  ),
-                  builder: (state, previewSize, previewRect) {
-                    _cameraState = state;
-                    return M7PreviewDecoratorWidget(
-                      cameraState: state,
-                      faceDetectionStream: _faceDetectionController,
-                      previewSize: previewSize,
-                      previewRect: previewRect,
-                      detectionColor:
-                      _steps[_stepsKey.currentState?.currentIndex ?? 0]
-                          .detectionColor,
-                    );
-                  },
-                  saveConfig: SaveConfig.photo(
-                    pathBuilder: () async {
-                      final String fileName = "${M7Utils.generate()}.jpg";
-                      final String path = await getTemporaryDirectory().then(
-                            (value) => value.path,
-                      );
-                      return "$path/$fileName";
-                    },
                   ),
                 ),
-              ),
-            ),
-          ),
-        )
+              )
             : M7LivelynessInfoWidget(
-          onStartTap: () {
-            if (!mounted) {
-              return;
-            }
-            _startTimer();
-            setState(
-                  () => _isInfoStepCompleted = true,
-            );
-          },
-        ),
+                onStartTap: () {
+                  if (!mounted) {
+                    return;
+                  }
+                  _startTimer();
+                  setState(
+                    () => _isInfoStepCompleted = true,
+                  );
+                },
+              ),
         if (_cameraState != null)
           Align(
-            alignment: Alignment(0.0, -1/3),
+            alignment: Alignment(0.0, -1 / 3),
             child: CircularProgress(),
           ),
-
         if (_isInfoStepCompleted)
           M7LivelynessDetectionStepOverlay(
             key: _stepsKey,
@@ -483,4 +482,3 @@ class _M7LivelynessDetectionScreenAndroidState
     );
   }
 }
-
